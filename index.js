@@ -12,7 +12,7 @@ app.get("/", function (req, res) {
 	res.send("Aún no tenemos data");
 });
 
-app.post("/webhook", express(), function (req, res) {
+app.post("/webhook", express.json(), function (req, res) {
 	const agent = new WebhookClient({ request: req, response: res });
 	const codigo = agent.parameters.codigo;
 	// console.log('Dialogflow Request headers: ' + JSON.stringify(req.headers));
