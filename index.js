@@ -8,7 +8,7 @@ const { WebhookClient } = require('dialogflow-fulfillment');
 app.use(cors());
 app.use(express.json());
 
-app.get("/", function (req, res) {
+app.get("/webhook", function (req, res) {
 	res.send("Aún no tenemos data");
 });
 
