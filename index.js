@@ -13,24 +13,20 @@ app.get("/", function (req, res) {
 });
 
 app.post("/webhook", express(), function (req, res) {
-	try {
-		const agent = new WebhookClient({ request: req, response: res });
-		const codigo = agent.parameters.codigo;
-		console.log('Dialogflow Request headers: ' + JSON.stringify(req.headers));
-		console.log('Dialogflow Request body: ' + JSON.stringify(req.body));
+	const agent = new WebhookClient({ request: req, response: res });
+	const codigo = agent.parameters.codigo;
+	// console.log('Dialogflow Request headers: ' + JSON.stringify(req.headers));
+	// console.log('Dialogflow Request body: ' + JSON.stringify(req.body));
 
-		async function consultaProyecto() {
-			const respuesta = await axios(process.env.API_SHEET)
-			agend.add(respuesta.data.data[0].status);
-		}
-
-		let intentMap = new Map();
-		intentMap.set('Consulta.Proyecto', consultaProyecto);
-
-		agent.handleRequest(intentMap);
-	} catch (error) {
-		agent.add("No tenemos información sobre ese proyecto");
+	async function consultaProyecto() {
+		const respuesta = await axios(process.env.API_SHEET)
+		agend.add(respuesta.data.data[0].status);
 	}
+
+	let intentMap = new Map();
+	intentMap.set('Consulta.Proyecto', consultaProyecto);
+
+	agent.handleRequest(intentMap);
 });
 
 const PORT = process.env.PORT || 3003;
