@@ -12,17 +12,22 @@ app.get("/webhook", function (req, res) {
 	res.send("Aún no tenemos data");
 });
 
-app.post("/webhook", express.json(), function (req, res) {
+app.post("/webhook", function (req, res) {
 	const agent = new WebhookClient({ request: req, response: res });
-	const codigo = agent.parameters.codigo;
+	// const codigo = agent.parameters.codigo;
 	// console.log('Dialogflow Request headers: ' + JSON.stringify(req.headers));
 	// console.log('Dialogflow Request body: ' + JSON.stringify(req.body));
 
 	async function consultaProyecto() {
-		const respuesta = await axios(process.env.API_SHEET)
+		let respuesta;
+		console.log('Hi');
+		try {
+			respuesta = await axios(process.env.API_SHEET)
+		} catch (error) {
+			console.log(error);
+		}
 		agend.add(respuesta.data.data[0].status);
 	}
-
 	let intentMap = new Map();
 	intentMap.set('Consulta.Proyecto', consultaProyecto);
 
